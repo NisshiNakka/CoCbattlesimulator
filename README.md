@@ -3,6 +3,9 @@
 画面遷移図
 https://www.figma.com/design/hTuB4WakRaxsQ0nd5V4a3h/CoC_battle_simulator?node-id=0-1&p=f&t=v40MQYZSMJYJMYN9-0
 
+ER図
+[![Image from Gyazo](https://i.gyazo.com/a569ec3895d6f9d3f19f6711fc8bd547.png)](https://gyazo.com/a569ec3895d6f9d3f19f6711fc8bd547)
+
 ## サービス概要
 
 このアプリは、TRPG(*1),特にCoCにおいての戦闘のシミュレーションを行うことができるアプリです。調整したデータはそのままココフォリア(*2)に出力することが可能であり、テストをしたデータをスムーズに本番で使うことができます。
