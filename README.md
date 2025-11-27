@@ -4,7 +4,7 @@
 https://www.figma.com/design/hTuB4WakRaxsQ0nd5V4a3h/CoC_battle_simulator?node-id=0-1&p=f&t=v40MQYZSMJYJMYN9-0
 
 ER図
-[![Image from Gyazo](https://i.gyazo.com/a569ec3895d6f9d3f19f6711fc8bd547.png)](https://gyazo.com/a569ec3895d6f9d3f19f6711fc8bd547)
+[![Image from Gyazo](https://i.gyazo.com/174da3c00f21572f92ff1be357557260.png)](https://gyazo.com/174da3c00f21572f92ff1be357557260)
 
 ## サービス概要
 
