@@ -1,5 +1,24 @@
 <div class="top-wrapper">
   <div class="top-inner-text">
     <h1>トップページ（仮）</h1>
+    
+    <%= form_with url: roll_dice_path, method: :post do |f| %>
+      <div class="form-group">
+        <%= f.label :command, "ダイスコマンド（例: 2d6, 1d100）" %>
+        <%= f.text_field :command, placeholder: "2d6", class: "form-control", value: params[:command] %>
+      </div>
+      <%= f.submit "ロール", class: "btn btn-primary" %>
+    <% end %>
+    
+    <% if @result.present? %>
+      <div class="result-area">
+        <h2>結果</h2>
+        <% if @result["error"] %>
+          <p class="error"><%= @result["error"] %></p>
+        <% else %>
+          <p class="result-text"><%= @result["text"] %></p>
+        <% end %>
+      </div>
+    <% end %>
   </div>
 </div>
