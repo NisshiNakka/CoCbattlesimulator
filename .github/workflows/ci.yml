@@ -54,23 +54,17 @@ jobs:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql
+      postgres:
+        image: postgres:15
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          POSTGRES_PASSWORD: password
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: valkey/valkey:8
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y default-libmysqlclient-dev node-gyp
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev node-gyp
 
       - name: Checkout code
         uses: actions/checkout@v5
@@ -83,32 +77,24 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://127.0.0.1:3306
-          # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          # REDIS_URL: redis://localhost:6379/0
+          DATABASE_URL: postgres://postgres:password@localhost:5432/test_database
         run: bin/rails db:test:prepare test
 
   system-test:
     runs-on: ubuntu-latest
 
     services:
-      mysql:
-        image: mysql
+      postgres:
+        image: postgres:15
         env:
-          MYSQL_ALLOW_EMPTY_PASSWORD: true
+          POSTGRES_PASSWORD: password
         ports:
-          - 3306:3306
-        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
-
-      # redis:
-      #   image: valkey/valkey:8
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+          - 5432:5432
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
 
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y default-libmysqlclient-dev node-gyp
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev node-gyp
 
       - name: Checkout code
         uses: actions/checkout@v5
@@ -121,9 +107,7 @@ jobs:
       - name: Run System Tests
         env:
           RAILS_ENV: test
-          DATABASE_URL: mysql2://127.0.0.1:3306
-          # RAILS_MASTER_KEY: ${{ secrets.RAILS_MASTER_KEY }}
-          # REDIS_URL: redis://localhost:6379/0
+          DATABASE_URL: postgres://postgres:password@localhost:5432/test_database
         run: bin/rails db:test:prepare test:system
 
       - name: Keep screenshots from failed system tests
