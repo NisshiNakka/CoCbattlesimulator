@@ -11,8 +11,10 @@ class StaticPagesController < ApplicationController
     else
       service = BcdiceApiService.new(game_system)
       @result = service.roll(command)
+
+      Rails.logger.info "BCDice API Response: #{@result.inspect}"
     end
     
-    render :top
+    render partial: "shared/dice_result", layout: false
   end
 end
