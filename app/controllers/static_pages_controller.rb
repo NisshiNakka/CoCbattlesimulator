@@ -14,7 +14,7 @@ class StaticPagesController < ApplicationController
 
       Rails.logger.info "BCDice API Response: #{@result.inspect}"
     end
-    
+
     render partial: "shared/dice_result", layout: false
   end
 end

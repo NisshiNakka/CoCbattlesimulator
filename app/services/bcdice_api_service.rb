@@ -3,6 +3,11 @@ class BcdiceApiService
   base_uri "https://bcdice.onlinesession.app/v2"
 
   default_timeout 10
+  headers(
+    "User-Agent" => "MyDiceApp/1.0 (Ruby/HTTParty)",
+    "Accept" => "application/json",
+    "Accept-Language" => "ja,en;q=0.9"
+  )
 
   def initialize(game_type)
     @game_type = game_type
@@ -10,28 +15,34 @@ class BcdiceApiService
 
   def roll(command)
     Rails.logger.info "BCDice API Request: game_system=#{@game_system}, command=#{command}"
-    
+
     # リトライロジック
     max_retries = 3
     retry_count = 0
-    
+
     begin
       response = self.class.get(
         "/game_system/#{@game_system}/roll",
         query: { command: command },
         timeout: 10,  # タイムアウト: 10秒
-        open_timeout: 5  # 接続タイムアウト: 5秒
+        open_timeout: 5,  # 接続タイムアウト: 5秒
+        headers: {
+          "User-Agent" => "MyDiceApp/1.0 (Ruby/HTTParty)",
+          "Accept" => "application/json",
+          "Accept-Language" => "ja,en;q=0.9",
+          "Referer" => ENV.fetch("APP_URL", "https://cocbattlesimulator.onrender.com/")
+        }
       )
-      
+
       Rails.logger.info "BCDice API Response Code: #{response.code}"
-      
+
       if response.success?
         response.parsed_response
       else
-        Rails.logger.error "BCDice API Error: code=#{response.code}, body=#{response.body}"
+        Rails.logger.error "BCDice API Error: code=#{response.code}, body=#{response.body[500]}"
         { "error" => "API呼び出しに失敗しました（ステータスコード: #{response.code}）" }
       end
-      
+
     rescue Net::OpenTimeout, Net::ReadTimeout => e
       # タイムアウトエラー
       retry_count += 1
@@ -43,7 +54,7 @@ class BcdiceApiService
         Rails.logger.error "BCDice API Timeout (max retries exceeded): #{e.message}"
         { "error" => "APIへの接続がタイムアウトしました。時間をおいて再度お試しください。" }
       end
-      
+
     rescue StandardError => e
       # その他のエラー
       Rails.logger.error "BCDice API Exception: #{e.class} - #{e.message}"
