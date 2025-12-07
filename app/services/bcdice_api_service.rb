@@ -4,7 +4,7 @@ class BcdiceApiService
 
   default_timeout 10
   headers(
-    "User-Agent" => "MyDiceApp/1.0 (Ruby/HTTParty)",
+    "User-Agent" => "Mozilla/5.0 (compatible; CoC Battle Simulator/1.0; +https://cocbattlesimulator.onrender.com)",
     "Accept" => "application/json",
     "Accept-Language" => "ja,en;q=0.9"
   )
@@ -26,7 +26,7 @@ class BcdiceApiService
         timeout: 10,
         open_timeout: 5,
         headers: {
-          "User-Agent" => "MyDiceApp/1.0 (Ruby/HTTParty)",
+          "User-Agent" => "Mozilla/5.0 (compatible; CoC Battle Simulator/1.0; +https://cocbattlesimulator.onrender.com)",
           "Accept" => "application/json",
           "Accept-Language" => "ja,en;q=0.9"
         }
