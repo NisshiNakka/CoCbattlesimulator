@@ -14,23 +14,21 @@ class BcdiceApiService
   end
 
   def roll(command)
-    Rails.logger.info "BCDice API Request: game_system=#{@game_system}, command=#{command}"
+    Rails.logger.info "BCDice API Request: game_system=#{@game_type}, command=#{command}"
 
-    # リトライロジック
     max_retries = 3
     retry_count = 0
 
     begin
       response = self.class.get(
-        "/game_system/#{@game_system}/roll",
+        "/game_system/#{@game_type}/roll",
         query: { command: command },
-        timeout: 10,  # タイムアウト: 10秒
-        open_timeout: 5,  # 接続タイムアウト: 5秒
+        timeout: 10,
+        open_timeout: 5,
         headers: {
           "User-Agent" => "MyDiceApp/1.0 (Ruby/HTTParty)",
           "Accept" => "application/json",
-          "Accept-Language" => "ja,en;q=0.9",
-          "Referer" => ENV.fetch("APP_URL", "https://cocbattlesimulator.onrender.com/")
+          "Accept-Language" => "ja,en;q=0.9"
         }
       )
 
